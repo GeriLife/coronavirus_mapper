@@ -4,6 +4,8 @@ Collecting self-reported coronavirus symptoms and displaying them on a real-time
 ## Development
 
 ### PostGIS
-This project relies on PostGIS. You can install PostGIS locally using Docker:
+This project relies on PostGIS. You can install PostGIS locally using Docker. Run the following command in this project root.
 
-> docker run --name coronavirus-mapper-postgis -e POSTGRES_PASSWORD=secretpassword -d postgis/postgis
+```
+docker-compose up
+```
