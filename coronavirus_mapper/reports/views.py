@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Report
 
-# Create your views here.
+
+class ReportListView(ListView):
+    model = Report
+    template_name = "reports/map.html"
