@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content%}
+<div id="map"></div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+var map = L.map('map').setView([-41.2858, 174.78682], 14);
+var mapLink = 
+        '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+
+L.tileLayer(
+    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; ' + mapLink,
+    maxZoom: 18,
+}).addTo(map);
+</script>
+{% endblock extra_js %}
+
+{% block extra_css %}
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    html, body, #map {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+{% endblock extra_css%}
