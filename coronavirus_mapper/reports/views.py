@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import TemplateView
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework_gis.filters import InBBoxFilter
@@ -7,8 +7,7 @@ from .models import Report
 from .serializers import ReportSerializer
 
 
-class ReportListView(ListView):
-    model = Report
+class ReportTemplateView(TemplateView):
     template_name = "reports/map.html"
 
 
