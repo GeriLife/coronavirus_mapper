@@ -9,3 +9,9 @@ class Report(models.Model):
     update_at = models.DateTimeField(auto_now=True)
 
     first_symptomatic = models.DateField(default=datetime.now)
+    location = PointField(null=True, blank=True)
+
+    @property
+    def lat_lng(self):
+
+        return list(getattr(self.point, "coords", []))[::-1]
