@@ -3,7 +3,7 @@
 {% block content%}
 <div id="map">
     <div class="leaflet-top leaflet-right mt-2 mr-2">
-        <input type="button" id="Btn1" value="Add a report" onclick="" class="btn btn-success" />
+        <input type="button" id="add-report" value="Add a report" onclick="" class="btn btn-success" />
     </div>
 </div>
 {% endblock content %}
@@ -37,6 +37,10 @@ jQuery.ajax("/reports/reports_json/", {
     html, body, #map {
         height: 100%;
         width: 100%;
+    }
+
+    .btn {
+        pointer-events: auto;
     }
 </style>
 {% endblock extra_css%}
