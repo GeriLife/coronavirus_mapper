@@ -28,13 +28,8 @@
 
                 <div class="form-group">
                     <label for="id_location_map">Location:</label>
-                    
-                    <input type="hidden" name="location" required="required" class="form-control">
-                    <p class="form-text text-muted" id="status">Testing</p>
-                    <a id = "map-link" target="_blank"></a>
+                    <div id="id_location_map" style="width: 100%"></div>
                 </div>
-
-                <div id="id_location_map" style="width: 100%"></div>
             </form>
         </div>
 
@@ -73,13 +68,28 @@ flatpickr("#id_first_symptomatic", {});
 
 var locationMap = L.map('id_location_map').setView([0, 0], 1);
 
+// Make sure location map renders correctly in modal
+$('#reportModal').on('shown.bs.modal', function () {
+    locationMap.invalidateSize();
+});
+
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(locationMap);
 
-$('#reportModal').on('shown.bs.modal', function () {
-    locationMap.invalidateSize();
-});
+var userLocationMarker = L.marker();
+
+locationMap.on('click', function (event) {
+    var lat = event.latlng.lat;
+    var lng = event.latlng.lng;
+
+    userLocationMarker.setLatLng([lat, lng]).addTo(locationMap);
+
+    var lat_fixed = (lat).toFixed(3)
+    var lng_fixed = (lng).toFixed(3)
+
+})
+
 
 </script>
 {% endblock extra_js %}
