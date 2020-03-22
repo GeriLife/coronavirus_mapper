@@ -17,4 +17,4 @@ class Report(models.Model):
         return list(getattr(self.location, "coords", []))[::-1]
 
     def __str__(self):
-        return self.lat_lng
+        return str(self.first_symptomatic)
