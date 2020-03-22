@@ -6,7 +6,7 @@
 
 {% block extra_js %}
 <script>
-var map = L.map('map').setView([-41.2858, 174.78682], 14);
+var map = L.map('map').setView([0, 0], 1);
 var mapLink = 
         '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 
@@ -15,6 +15,10 @@ L.tileLayer(
     attribution: 'Map data &copy; ' + mapLink,
     maxZoom: 18,
 }).addTo(map);
+
+{% for report in object_list %}
+    L.marker({{ report.lat_lng }}).addTo(map);
+{% endfor %}
 </script>
 {% endblock extra_js %}
 
