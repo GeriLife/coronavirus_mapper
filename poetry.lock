@@ -99,6 +99,17 @@ version = "3.11.0"
 django = ">=1.11"
 
 [[package]]
+category = "main"
+description = "Geographic add-ons for Django Rest Framework"
+name = "djangorestframework-gis"
+optional = false
+python-versions = "*"
+version = "0.15"
+
+[package.dependencies]
+djangorestframework = "*"
+
+[[package]]
 category = "dev"
 description = "Utility library for gitignore style pattern matching of file paths."
 name = "pathspec"
@@ -163,7 +174,7 @@ python-versions = "*"
 version = "1.4.1"
 
 [metadata]
-content-hash = "97ee7066c3996746f192dff766c00be8cf3283e1ab398d8d6cf0d091f11138ec"
+content-hash = "c7cde7277d56487da43bcc07cace0871ae5f9fb7bd31f9c51f07e81542c8070d"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -197,6 +208,9 @@ django = [
 djangorestframework = [
     {file = "djangorestframework-3.11.0-py3-none-any.whl", hash = "sha256:05809fc66e1c997fd9a32ea5730d9f4ba28b109b9da71fccfa5ff241201fd0a4"},
     {file = "djangorestframework-3.11.0.tar.gz", hash = "sha256:e782087823c47a26826ee5b6fa0c542968219263fb3976ec3c31edab23a4001f"},
+]
+djangorestframework-gis = [
+    {file = "djangorestframework_gis-0.15-py2.py3-none-any.whl", hash = "sha256:63c253528a107bc77cd71506cd639a0489b05b763fa7c3190cfd4622bf094594"},
 ]
 pathspec = [
     {file = "pathspec-0.7.0-py2.py3-none-any.whl", hash = "sha256:163b0632d4e31cef212976cf57b43d9fd6b0bac6e67c26015d611a647d5e7424"},
