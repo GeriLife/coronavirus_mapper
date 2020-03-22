@@ -27,9 +27,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="id_location">Location:</label>
-                    <input type="text" id="id_location" name="location" required="required" class="form-control">
+                    <label for="id_location_map">Location:</label>
+                    
+                    <input type="hidden" name="location" required="required" class="form-control">
+                    <p class="form-text text-muted" id="status">Testing</p>
+                    <a id = "map-link" target="_blank"></a>
                 </div>
+
+                <div id="id_location_map" style="width: 100%"></div>
             </form>
         </div>
 
@@ -63,6 +68,16 @@ jQuery.ajax("/reports/reports_json/", {
     }
 });
 
+var locationMap = L.map('id_location_map').setView([0, 0], 1);
+
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(locationMap);
+
+$('#reportModal').on('shown.bs.modal', function () {
+    locationMap.invalidateSize();
+});
+
 </script>
 {% endblock extra_js %}
 
@@ -75,6 +90,9 @@ jQuery.ajax("/reports/reports_json/", {
 
     .btn {
         pointer-events: auto;
+    }
+    #id_location_map {
+        height: 250px;
     }
 </style>
 {% endblock extra_css%}
