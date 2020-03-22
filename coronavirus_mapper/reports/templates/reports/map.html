@@ -68,6 +68,9 @@ jQuery.ajax("/reports/reports_json/", {
     }
 });
 
+// Add calendar widget to "first symptomatic" field
+flatpickr("#id_first_symptomatic", {});
+
 var locationMap = L.map('id_location_map').setView([0, 0], 1);
 
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
