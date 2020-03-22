@@ -86,10 +86,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         # TODO: use environment variables for database credentials
-        'HOST': 'localhost:5432',
+        'HOST': 'localhost',
         'USER': 'postgres',
-        'PASSWORD': 'secretpassword',
-        'NAME': 'coronavirus_mapper'
+        'PASSWORD': 'postgres',
+        'NAME': 'postgres'
 
     }
 }
