@@ -14,4 +14,7 @@ class Report(models.Model):
     @property
     def lat_lng(self):
 
-        return list(getattr(self.point, "coords", []))[::-1]
+        return list(getattr(self.location, "coords", []))[::-1]
+
+    def __str__(self):
+        return self.lat_lng
