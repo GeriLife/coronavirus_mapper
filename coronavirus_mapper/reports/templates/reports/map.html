@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 
 {% block content%}
-<div id="map"></div>
+<div id="map">
+    <div class="leaflet-top leaflet-right mt-2 mr-2">
+        <input type="button" id="Btn1" value="Add a report" onclick="" class="btn btn-success" />
+    </div>
+</div>
 {% endblock content %}
 
 {% block extra_js %}
 <script>
-var map = L.map('map').setView([0, 0], 1);
-var mapLink = 
-        '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+var map = L.map('map').setView([0, 0], 2);
+
+var mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 
 L.tileLayer(
     'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -16,18 +20,20 @@ L.tileLayer(
     maxZoom: 18,
 }).addTo(map);
 
-{% for report in object_list %}
-    L.marker({{ report.lat_lng }}).addTo(map);
-{% endfor %}
+jQuery.ajax("/reports/reports_json/", {
+    success: function (reports) {
+        // Add report markers to map
+        reports.features.forEach(function (report) {
+            L.marker(report.geometry.coordinates).addTo(map);
+        });
+    }
+});
+
 </script>
 {% endblock extra_js %}
 
 {% block extra_css %}
 <style>
-    body {
-        padding: 0;
-        margin: 0;
-    }
     html, body, #map {
         height: 100%;
         width: 100%;
