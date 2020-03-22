@@ -56,7 +56,9 @@ ROOT_URLCONF = 'coronavirus_mapper.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'coronavirus_mapper/templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
