@@ -20,7 +20,7 @@
         </div>
 
         <div class="modal-body">
-            <form>
+            <form id="reportForm">
                 <div class="form-group">
                     <label for="id_first_symptomatic">First symptomatic:</label>
                     <input type="date" name="first_symptomatic" required="required" id="id_first_symptomatic" class="form-control">
@@ -29,14 +29,12 @@
                 <div class="form-group">
                     <label for="id_location_map">Location:</label>
                     <div id="id_location_map" style="width: 100%"></div>
+                    <p id="location_map_validation_message" class="bg-danger text-white mt-2 p-2" style="display: none;">Please choose a location for this report.</p>
                 </div>
-            </form>
-        </div>
 
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
     </div>
 </div>
@@ -58,13 +56,18 @@ jQuery.ajax("/reports/reports_json/", {
     success: function (reports) {
         // Add report markers to map
         reports.features.forEach(function (report) {
-            L.marker(report.geometry.coordinates).addTo(map);
+            var lat = report.geometry.coordinates[1];
+            var lng = report.geometry.coordinates[0];
+
+            L.marker([lat, lng]).addTo(map);
         });
     }
 });
 
 // Add calendar widget to "first symptomatic" field
-flatpickr("#id_first_symptomatic", {});
+var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
+    defaultDate: 'today',
+});
 
 var locationMap = L.map('id_location_map').setView([0, 0], 1);
 
@@ -83,14 +86,45 @@ locationMap.on('click', function (event) {
     var lat = event.latlng.lat;
     var lng = event.latlng.lng;
 
-    userLocationMarker.setLatLng([lat, lng]).addTo(locationMap);
+    var lat_fixed = (lat).toFixed(3);
+    var lng_fixed = (lng).toFixed(3);
 
-    var lat_fixed = (lat).toFixed(3)
-    var lng_fixed = (lng).toFixed(3)
+    userLocationMarker.setLatLng([lat_fixed, lng_fixed]).addTo(locationMap);
+});
 
-})
+$('#reportForm').submit(function(event) {
+    event.preventDefault();
+    
+    if (!userLocationMarker.getLatLng()) {
+        $("#location_map_validation_message").show();
+    } else {
+        $("#location_map_validation_message").hide();
 
+        var location = userLocationMarker.toGeoJSON()
 
+        var firstSymptomatic = firstSymptomaticField.selectedDates[0];
+
+        var reportData = {
+            first_symptomatic: moment(firstSymptomatic).format('YYYY-MM-DD'),
+            location: location.geometry
+        };
+
+        jQuery.ajax ({
+            url: "/reports/reports_json/",
+            type: "POST",
+            data: JSON.stringify(reportData),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function(){
+                console.log("success")
+                window.location.reload();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+});
 </script>
 {% endblock extra_js %}
 
