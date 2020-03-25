@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-25 19:29+0000\n"
+"POT-Creation-Date: 2020-03-25 21:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,26 +18,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: reports/templates/reports/map.html:9
+#: coronavirus_mapper/templates/base.html:39
+msgid "Coronavirus symptoms"
+msgstr "Koronavirus oireet"
+
+#: coronavirus_mapper/templates/base.html:43
 msgid "Add report"
 msgstr "Lisää raportti"
 
-#: reports/templates/reports/map.html:20
+#: reports/templates/reports/map.html:15
 msgid "Submit report"
 msgstr "Lähetä raportti"
 
-#: reports/templates/reports/map.html:32
+#: reports/templates/reports/map.html:27
 msgid "First symptomatic"
 msgstr "Ensimmäinen oireellinen"
 
-#: reports/templates/reports/map.html:39
+#: reports/templates/reports/map.html:34
 msgid "Location"
 msgstr "Sijainti"
 
-#: reports/templates/reports/map.html:46
+#: reports/templates/reports/map.html:41
 msgid "Close"
 msgstr ""
 
-#: reports/templates/reports/map.html:50
+#: reports/templates/reports/map.html:45
 msgid "Submit"
 msgstr ""
