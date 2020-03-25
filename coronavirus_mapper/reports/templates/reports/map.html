@@ -3,6 +3,7 @@
 {% load i18n %}
 
 {% block content%}
+{% comment %}
 <div id="map">
     <div class="leaflet-top leaflet-right mt-2 mr-2">
         <button type="button" id="add-report" class="btn btn-success" data-toggle="modal" data-target="#reportModal" />
@@ -10,6 +11,9 @@
         </button>
     </div>
 </div>
+{% endcomment %}
+
+<div id="map" class="map"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
@@ -57,25 +61,37 @@
 
 {% block extra_js %}
 <script>
-var map = L.map('map').setView([0, 0], 2);
-
-var mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-
-L.tileLayer(
-    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; ' + mapLink,
-    maxZoom: 18,
-}).addTo(map);
+var map = new ol.Map({
+    target: 'map',
+    layers: [
+        new ol.layer.Tile({
+            source: new ol.source.OSM()
+        })
+    ],
+    view: new ol.View({
+        center: ol.proj.fromLonLat([37.41, 8.82]),
+        zoom: 1
+    })
+});
 
 jQuery.ajax("/reports/reports_json/", {
     success: function (reports) {
         // Add report markers to map
-        reports.features.forEach(function (report) {
-            var lat = report.geometry.coordinates[1];
-            var lng = report.geometry.coordinates[0];
+        var reportFeatures = reports.features.map(function (report) {
+            var lonLat = ol.proj.fromLonLat(report.geometry.coordinates);
 
-            L.marker([lat, lng]).addTo(map);
+            var reportPoint = new ol.geom.Point(lonLat);
+
+            return new ol.Feature(reportPoint);
         });
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: reportFeatures,
+            }),
+        });
+
+        map.addLayer(layer);
     }
 });
 
