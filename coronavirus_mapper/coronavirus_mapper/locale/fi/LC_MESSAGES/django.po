@@ -20,19 +20,19 @@ msgstr ""
 
 #: reports/templates/reports/map.html:9
 msgid "Add report"
-msgstr ""
+msgstr "Lisää raportti"
 
 #: reports/templates/reports/map.html:20
 msgid "Submit report"
-msgstr ""
+msgstr "Lähetä raportti"
 
 #: reports/templates/reports/map.html:32
 msgid "First symptomatic"
-msgstr ""
+msgstr "Ensimmäinen oireellinen"
 
 #: reports/templates/reports/map.html:39
 msgid "Location"
-msgstr ""
+msgstr "Sijainti"
 
 #: reports/templates/reports/map.html:46
 msgid "Close"
