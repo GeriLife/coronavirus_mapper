@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-25 19:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: reports/templates/reports/map.html:9
+msgid "Add report"
+msgstr ""
+
+#: reports/templates/reports/map.html:20
+msgid "Submit report"
+msgstr ""
+
+#: reports/templates/reports/map.html:32
+msgid "First symptomatic"
+msgstr ""
+
+#: reports/templates/reports/map.html:39
+msgid "Location"
+msgstr ""
+
+#: reports/templates/reports/map.html:46
+msgid "Close"
+msgstr ""
+
+#: reports/templates/reports/map.html:50
+msgid "Submit"
+msgstr ""
