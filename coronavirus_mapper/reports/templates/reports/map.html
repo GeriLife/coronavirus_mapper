@@ -53,6 +53,7 @@
 {% block extra_js %}
 <script>
 function initializeReportModalMap() {
+    /*
     // Create map widget for user location input
     var locationMap = L.map('id_location_map').setView([0, 0], 1);
 
@@ -67,16 +68,46 @@ function initializeReportModalMap() {
     var userLocationMarker = L.marker();
 
     locationMap.on('click', function (event) {
-        var lat = event.latlng.lat;
-        var lng = event.latlng.lng;
-
-        // Reduce coordinate accuracy for anonymization
-        var lat_fixed = (lat).toFixed(3);
-        var lng_fixed = (lng).toFixed(3);
+        var anonymizedLocation = anonymizeLocation(event);
 
         // Update location marker
-        userLocationMarker.setLatLng([lat_fixed, lng_fixed]).addTo(locationMap);
+        userLocationMarker.setLatLng().addTo(locationMap);
     });
+    */
+
+    /* OpenLayers */
+    // remove any old location map
+    // to prevent duplicate remder
+    $('#id_location_map').empty();
+    
+    var reportMap = new ol.Map({
+        target: 'id_location_map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([0, 0]),
+            zoom: 1
+        })
+    });
+}
+
+/*
+Given a map click event
+Anonymize the location data
+by reducing decimal degree precision
+*/
+function anonymizeLocation(event) {
+    var lat = event.latlng.lat;
+    var lng = event.latlng.lng;
+
+    // Reduce coordinate accuracy for anonymization
+    var lat_fixed = (lat).toFixed(3);
+    var lng_fixed = (lng).toFixed(3);
+
+    return [lat_fixed, lng_fixed];
 }
 
 function initializeReportModalCalendarWidget() {
