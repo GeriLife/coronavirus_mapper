@@ -52,6 +52,40 @@
 
 {% block extra_js %}
 <script>
+function initializeReportModalMap() {
+    // Create map widget for user location input
+    var locationMap = L.map('id_location_map').setView([0, 0], 1);
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(locationMap);
+
+    // Initially empty location marker
+    // TODO: try to use browser geolocation
+    // e.g. with a button "use my location"
+    // may require HTTPS dev environment
+    var userLocationMarker = L.marker();
+
+    locationMap.on('click', function (event) {
+        var lat = event.latlng.lat;
+        var lng = event.latlng.lng;
+
+        // Reduce coordinate accuracy for anonymization
+        var lat_fixed = (lat).toFixed(3);
+        var lng_fixed = (lng).toFixed(3);
+
+        // Update location marker
+        userLocationMarker.setLatLng([lat_fixed, lng_fixed]).addTo(locationMap);
+    });
+}
+
+function initializeReportModalCalendarWidget() {
+    // Add calendar widget to "first symptomatic" field
+    var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
+        defaultDate: 'today',
+    });
+}
+
 var map = new ol.Map({
     target: 'map',
     layers: [
@@ -86,32 +120,11 @@ jQuery.ajax("/reports/reports_json/", {
     }
 });
 
-// Add calendar widget to "first symptomatic" field
-var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
-    defaultDate: 'today',
-});
-
-var locationMap = L.map('id_location_map').setView([0, 0], 1);
-
 // Make sure location map renders correctly in modal
 $('#reportModal').on('shown.bs.modal', function () {
-    locationMap.invalidateSize();
-});
+    initializeReportModalCalendarWidget();
 
-L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(locationMap);
-
-var userLocationMarker = L.marker();
-
-locationMap.on('click', function (event) {
-    var lat = event.latlng.lat;
-    var lng = event.latlng.lng;
-
-    var lat_fixed = (lat).toFixed(3);
-    var lng_fixed = (lng).toFixed(3);
-
-    userLocationMarker.setLatLng([lat_fixed, lng_fixed]).addTo(locationMap);
+    initializeReportModalMap();
 });
 
 $('#reportForm').submit(function(event) {
