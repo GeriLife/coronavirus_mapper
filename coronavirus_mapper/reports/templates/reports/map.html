@@ -52,30 +52,11 @@
 
 {% block extra_js %}
 <script>
+// user location point
+// changes position when user clicks on map
+var userLocationPoint = new ol.geom.Point([0, 0]);
+
 function initializeReportModalMap() {
-    /*
-    // Create map widget for user location input
-    var locationMap = L.map('id_location_map').setView([0, 0], 1);
-
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(locationMap);
-
-    // Initially empty location marker
-    // TODO: try to use browser geolocation
-    // e.g. with a button "use my location"
-    // may require HTTPS dev environment
-    var userLocationMarker = L.marker();
-
-    locationMap.on('click', function (event) {
-        var anonymizedLocation = anonymizeLocation(event);
-
-        // Update location marker
-        userLocationMarker.setLatLng().addTo(locationMap);
-    });
-    */
-
-    /* OpenLayers */
     // remove any old location map
     // to prevent duplicate remder
     $('#id_location_map').empty();
@@ -83,42 +64,59 @@ function initializeReportModalMap() {
     var reportMap = new ol.Map({
         target: 'id_location_map',
         layers: [
+            // OSM base map
             new ol.layer.Tile({
                 source: new ol.source.OSM()
-            })
+            }),
+            // User location layer
+            new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [
+                        new ol.Feature({
+                            geometry: userLocationPoint
+                        }),
+                    ]
+                }),
+            }),
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([0, 0]),
+            projection: 'EPSG:4326',
+            center: [0, 0],
             zoom: 1
         })
+    });
+
+    reportMap.on('click', function (event) {      
+        // anonymize location by reducing precision
+        var anonymizedLocation = anonymizeLocation(event.coordinate);
+
+        // update location marker position
+        userLocationPoint.setCoordinates(anonymizedLocation);
     });
 }
 
 /*
-Given a map click event
 Anonymize the location data
 by reducing decimal degree precision
 */
-function anonymizeLocation(event) {
-    var lat = event.latlng.lat;
-    var lng = event.latlng.lng;
+function anonymizeLocation(lonLat) {
+    var precision = 3;
 
     // Reduce coordinate accuracy for anonymization
-    var lat_fixed = (lat).toFixed(3);
-    var lng_fixed = (lng).toFixed(3);
-
-    return [lat_fixed, lng_fixed];
-}
-
-function initializeReportModalCalendarWidget() {
-    // Add calendar widget to "first symptomatic" field
-    // default to today for convenience
-    // don't allow "future" reports
-    var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
-        defaultDate: 'today',
-        maxDate: 'today',
+    return lonLat.map(function (coordinate) {
+        // how may decimal points to keep
+        // fewer is less precise
+        return coordinate.toFixed(precision)
     });
 }
+
+// Add calendar widget to "first symptomatic" field
+// default to today for convenience
+// don't allow "future" reports
+var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
+    defaultDate: 'today',
+    maxDate: 'today',
+});
 
 var map = new ol.Map({
     target: 'map',
@@ -128,7 +126,8 @@ var map = new ol.Map({
         })
     ],
     view: new ol.View({
-        center: ol.proj.fromLonLat([37.41, 8.82]),
+        center: [0, 0],
+        projection: 'EPSG:4326',
         zoom: 1
     })
 });
@@ -137,9 +136,7 @@ jQuery.ajax("/reports/reports_json/", {
     success: function (reports) {
         // Add report markers to map
         var reportFeatures = reports.features.map(function (report) {
-            var lonLat = ol.proj.fromLonLat(report.geometry.coordinates);
-
-            var reportPoint = new ol.geom.Point(lonLat);
+            var reportPoint = new ol.geom.Point(report.geometry.coordinates);
 
             return new ol.Feature(reportPoint);
         });
@@ -156,51 +153,48 @@ jQuery.ajax("/reports/reports_json/", {
 
 // Make sure location map renders correctly in modal
 $('#reportModal').on('shown.bs.modal', function () {
-    initializeReportModalCalendarWidget();
-
     initializeReportModalMap();
 });
 
 $('#reportForm').submit(function(event) {
     event.preventDefault();
-    
-    if (!userLocationMarker.getLatLng()) {
-        $("#location_map_validation_message").show();
-    } else {
-        $("#location_map_validation_message").hide();
 
-        var location = userLocationMarker.toGeoJSON()
+    // format field data for sending to server
+    var firstSymptomatic = moment(firstSymptomaticField.selectedDates[0]).format('YYYY-MM-DD');
+    var coordinates = userLocationPoint.getCoordinates().map(function (coordinate) {
+        return parseFloat(coordinate);
+    });
 
-        var firstSymptomatic = firstSymptomaticField.selectedDates[0];
+    var reportData = {
+        first_symptomatic: firstSymptomatic,
+        location: {
+            "type": "Point",
+            "coordinates": coordinates,
+        },
+    };
 
-        var reportData = {
-            first_symptomatic: moment(firstSymptomatic).format('YYYY-MM-DD'),
-            location: location.geometry
-        };
-
-        jQuery.ajax ({
-            url: "/reports/reports_json/",
-            type: "POST",
-            data: JSON.stringify(reportData),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function(){
-                console.log("success")
-                window.location.reload();
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
+    jQuery.ajax ({
+        url: "/reports/reports_json/",
+        type: "POST",
+        data: JSON.stringify(reportData),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(){
+            console.log("success")
+            window.location.reload();
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
 });
 </script>
 {% endblock extra_js %}
 
 {% block extra_css %}
 <style>
-    #id_location_map {
-        height: 250px;
-    }
+#id_location_map {
+    height: 300px;
+}
 </style>
-{% endblock extra_css%}
+{% endblock extra_css %}
