@@ -141,13 +141,20 @@ jQuery.ajax("/reports/reports_json/", {
             return new ol.Feature(reportPoint);
         });
 
-        var layer = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                features: reportFeatures,
-            }),
+        var source = new ol.source.Vector({
+            features: reportFeatures,
         });
 
-        map.addLayer(layer);
+        var clusterSource = new ol.source.Cluster({
+            source: source,
+            distance: 40,
+        });
+
+        var clusterLayer = new ol.layer.Vector({
+            source: clusterSource,
+        });
+
+        map.addLayer(clusterLayer);
     }
 });
 
@@ -180,7 +187,6 @@ $('#reportForm').submit(function(event) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(){
-            console.log("success")
             window.location.reload();
         },
         error: function (error) {
