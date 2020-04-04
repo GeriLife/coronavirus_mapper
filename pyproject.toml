@@ -12,6 +12,11 @@ psycopg2-binary = "^2.8.4"
 djangorestframework = "^3.11.0"
 djangorestframework-gis = "^0.15"
 django-filter = "^2.2.0"
+jupyterlab = "^2.0.1"
+pandas = "^1.0.3"
+seaborn = "^0.10.0"
+requests = "^2.23.0"
+geopy = "^1.21.0"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
