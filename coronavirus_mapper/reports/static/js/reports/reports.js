@@ -53,7 +53,7 @@ var calculateClusterInfo = function (resolution) {
 
         var featuresExtent = ol.extent.getWidth(extent) + ol.extent.getHeight(extent);
 
-        var radius = 0.25 * featuresExtent / resolution;
+        var radius = 0.33 * featuresExtent / resolution;
 
         cluster.set('radius', radius);
     });
