@@ -2,6 +2,14 @@
 // changes position when user clicks on map
 var userLocationPoint = new ol.geom.Point([0, 0]);
 
+// Add calendar widget to "first symptomatic" field
+// default to today for convenience
+// don't allow "future" reports
+var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
+    defaultDate: 'today',
+    maxDate: 'today',
+});
+
 function initializeReportModalMap() {
     // remove any old location map
     // to prevent duplicate remder

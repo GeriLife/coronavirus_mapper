@@ -1,11 +1,3 @@
-// Add calendar widget to "first symptomatic" field
-// default to today for convenience
-// don't allow "future" reports
-var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
-    defaultDate: 'today',
-    maxDate: 'today',
-});
-
 var map = new ol.Map({
     target: 'map',
     layers: [
