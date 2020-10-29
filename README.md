@@ -1,6 +1,6 @@
 # Coronavirus mapper
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 Collecting self-reported coronavirus symptoms and displaying them on a real-time map.
 
@@ -40,6 +40,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://sites.google.com/view/data-journalbr/p%C3%A1gina-inicial"><img src="https://avatars2.githubusercontent.com/u/50274278?v=4" width="100px;" alt=""/><br /><sub><b>Lucas Rabelo</b></sub></a><br /><a href="#translation-marreapato" title="Translation">🌍</a></td>
+    <td align="center"><a href="https://joeshindano.com"><img src="https://avatars2.githubusercontent.com/u/25740484?v=4" width="100px;" alt=""/><br /><sub><b>Joe Shindano</b></sub></a><br /><a href="#translation-Joerockafella" title="Translation">🌍</a></td>
   </tr>
 </table>
 
