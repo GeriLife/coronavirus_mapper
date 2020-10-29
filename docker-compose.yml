@@ -1,12 +1,23 @@
-version: "3"
+version: "3.5"
 services:
-  postgis:
-    image: geographica/postgis:dev_diplodocus
+  postgres:
+    container_name: coronavirus_mapper_postgres
+    image: postgis/postgis
     ports:
       - "5432:5432"
-    volumes:
-      - db-data:/data
     environment:
-      - POSTGRES_PASSWD=postgres
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /data/postgres
+    networks:
+      - postgres
+    volumes:
+      - ./postgres_data:/data/postgres
+
 volumes:
-  db-data:
+  postgres_data:
+
+networks:
+  postgres:
+    driver: bridge
+    
