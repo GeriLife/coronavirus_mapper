@@ -17,6 +17,7 @@ pandas = "^1.0.3"
 seaborn = "^0.10.0"
 requests = "^2.23.0"
 geopy = "^1.21.0"
+django-rest-framework = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
